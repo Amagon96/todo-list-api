@@ -27,3 +27,20 @@ def create_post(post: ToDo):
     post.id = str(uuid())
     posts.append(post.model_dump())
     return post
+
+@app.put("/{id}")
+def update_post(id: str, post: ToDo):
+    for index, p in enumerate(posts):
+        if p["id"] == id:
+            post.id = id
+            posts[index] = post.model_dump()
+            return post
+    return {"error": "ToDo not found"}
+
+@app.delete("/{id}")
+def delete_post(id: str):
+    for index, p in enumerate(posts):
+        if p["id"] == id:
+            del posts[index]
+            return {"message": "ToDo deleted"}
+    return {"error": "ToDo not found"}
